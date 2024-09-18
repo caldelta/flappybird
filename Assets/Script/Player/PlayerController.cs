@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EventManager.Model;
+using UnityEngine.InputSystem;
+using System.Runtime.InteropServices;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -33,7 +36,6 @@ public class PlayerController : MonoBehaviour
             PlayerHeight = transform.GetComponent<SpriteRenderer>().bounds.size.y,
             HitEffect = m_hitEffect
         };
-
         DisableControl();
         HideHitEffect();
 
@@ -45,7 +47,20 @@ public class PlayerController : MonoBehaviour
         EventBus.Instance.StartListening(EventBusType.SHOW_HIT_EFFECT_PLAYER, ShowHitEffect);
         EventBus.Instance.StartListening(EventBusType.HIDE_HIT_EFFECT_PLAYER, HideHitEffect);
     }
+    public bool GetMouseButtonUp(int button)
+    {
+        switch (button)
+        {
+            case 0:
+                return Mouse.current.leftButton.wasReleasedThisFrame;
+            case 1:
+                return Mouse.current.rightButton.wasReleasedThisFrame;
+            case 2:
+                return Mouse.current.middleButton.wasReleasedThisFrame;
+        }
 
+        return false;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -63,7 +78,7 @@ public class PlayerController : MonoBehaviour
             m_player.Velocity = Vector3.zero;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (GetMouseButtonUp(0))
         {
             SoundManager.Instance.Play(SoundType.FLAP);
             m_player.Fly();

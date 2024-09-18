@@ -6,6 +6,9 @@ using EventManager.Model;
 
 public class SpawnController : MonoBehaviour
 {
+    private static SpawnController instance;
+
+    public static SpawnController Instance => instance;
     public List<GameObject> List;
 
     [SerializeField]
@@ -21,6 +24,13 @@ public class SpawnController : MonoBehaviour
     private float m_offsetXMax;
 
     private List<Vector3> m_originalPosList;
+
+    public GameObject LastBlock;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -40,8 +50,10 @@ public class SpawnController : MonoBehaviour
         {
             m_offsetXMin = m_offsetXMax = 4;           
         }
-
+ 
         Spawn();
+        LastBlock = List[List.Count - 1];
+        Debug.Log($"LastBlock 1111 : {LastBlock.transform.localPosition} {LastBlock.name}");
         EventBus.Instance.StartListening(EventBusType.RESET_SPAWN_BLOCK, ResetSpawn);
         EventBus.Instance.StartListening(EventBusType.STOP_SCROLL, StopScroll);
         EventBus.Instance.StartListening(EventBusType.START_SCROLL, StartScroll);

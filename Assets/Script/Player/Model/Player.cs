@@ -14,7 +14,7 @@ public class Player
 
     public void Fly()
     {
-        Velocity = new Vector3(0, 0.05f, 0);
+        Velocity = new Vector3(0, 0.025f, 0);
         FlyAnimation();
     }
 

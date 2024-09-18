@@ -27,7 +27,8 @@ public class Scroll : MonoBehaviour
     {
         if(m_isBlock)
         {
-            m_offsetMin = m_offsetMax = 10;
+            m_offsetMin = 4;
+            m_offsetMax = 6;
         }
         else
         {
@@ -55,6 +56,10 @@ public class Scroll : MonoBehaviour
 
     private void ResetPosition()
     {
-        transform.localPosition = new Vector3(CameraBound.SharedInstance.Width + Random.Range(m_offsetMin, m_offsetMax), transform.localPosition.y, 0);
+        var lastBlock = SpawnController.Instance.LastBlock.transform.localPosition;
+
+        transform.localPosition = new Vector3(lastBlock.x + Random.Range(m_offsetMin, m_offsetMax), transform.localPosition.y, 0);
+
+        SpawnController.Instance.LastBlock = gameObject;
     }
 }
